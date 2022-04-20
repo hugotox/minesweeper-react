@@ -11,10 +11,10 @@ const FieldStory: Meta = {
   title: 'Field',
 }
 
-const Template: Story = withTheme(({ columns, rows }: FieldProps) => {
+const Template: Story = withTheme(({}: FieldProps) => {
   return (
     <div>
-      <Field columns={columns} onClick={() => {}} onRightClick={() => {}} rows={rows} />
+      <Field onClick={() => {}} onRightClick={() => {}} />
     </div>
   )
 })

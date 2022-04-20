@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { Field, Panel, Window, ScoreView } from '../../components'
+import { createField } from '../../helpers'
 import {
   setCounter,
   useAppDispatch,
@@ -12,8 +13,11 @@ import {
   selectNumBombs,
   selectStatus,
   gameStart,
-  createField,
+  setField,
+  selectField,
+  updateCellStatus,
 } from '../../module'
+import { BOMB_CELL } from '../../module/gameSlice'
 import { Cell } from '../cell'
 
 import * as styles from './styles'
@@ -21,9 +25,10 @@ import * as styles from './styles'
 export const Main = () => {
   const dispatch = useAppDispatch()
   const { numColumns, numRows } = useAppSelector(selectFieldSize)
-  const numbBombs = useAppSelector(selectNumBombs)
+  const numBombs = useAppSelector(selectNumBombs)
   const counter = useAppSelector(selectCounter)
   const status = useAppSelector(selectStatus)
+  const field = useAppSelector(selectField)
   const [isButtonPressed, setIsButtonPressed] = useState(false)
 
   const handleOnStart = () => {
@@ -31,10 +36,13 @@ export const Main = () => {
   }
 
   const handleFieldClick = (i: number, j: number) => {
-    console.log('click', i, j)
     if (status === 'stopped') {
       handleOnStart()
     }
+    if (field[i][j].numBombs === BOMB_CELL) {
+      console.log('bomb clicked')
+    }
+    dispatch(updateCellStatus({ i, j, status: 'clicked' }))
   }
   const handleFieldRightClick = (i: number, j: number) => {
     console.log('right click', i, j)
@@ -44,12 +52,12 @@ export const Main = () => {
   }
 
   useEffect(() => {
-    dispatch(createField())
+    dispatch(setField(createField({ numBombs, numColumns, numRows })))
 
     window.addEventListener('contextmenu', (event) => {
       event.preventDefault()
     })
-  }, [dispatch])
+  }, [dispatch, numBombs, numColumns, numRows])
 
   useEffect(() => {
     let timeout: NodeJS.Timeout
@@ -66,10 +74,10 @@ export const Main = () => {
 
   return (
     <div css={styles.main}>
-      <Window title="Minesweeper">
+      <Window css={styles.window} title="Minesweeper">
         <Panel css={styles.panel}>
           <Panel borderWidth={2} css={styles.topPanel} pressed>
-            <ScoreView value={numbBombs} />
+            <ScoreView value={numBombs} />
             <button
               css={styles.playButton}
               onClick={handleOnStart}
@@ -83,12 +91,7 @@ export const Main = () => {
             <ScoreView value={counter} />
           </Panel>
           <Panel pressed>
-            <Field
-              columns={numColumns}
-              onClick={handleFieldClick}
-              onRightClick={handleFieldRightClick}
-              rows={numRows}
-            />
+            <Field onClick={handleFieldClick} onRightClick={handleFieldRightClick} />
           </Panel>
         </Panel>
       </Window>

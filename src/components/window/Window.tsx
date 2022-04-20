@@ -16,9 +16,9 @@ export interface WindowProps extends HTMLAttributes<HTMLDivElement> {
   width?: number
 }
 
-export const Window = ({ children, height, title, width }: WindowProps) => {
+export const Window = ({ children, height, title, width, ...rest }: WindowProps) => {
   return (
-    <Cell css={styles.window} style={{ height, width }}>
+    <Cell css={styles.window} style={{ height, width }} {...rest}>
       {title && (
         <div css={styles.title}>
           <div css={styles.flexContainer}>

@@ -26,7 +26,7 @@ const WithFieldTmpl: Story = withTheme(() => {
   return (
     <Window title="Minesweeper">
       <Panel>
-        <Field columns={8} onClick={() => {}} onRightClick={() => {}} rows={8} />
+        <Field onClick={() => {}} onRightClick={() => {}} />
       </Panel>
     </Window>
   )

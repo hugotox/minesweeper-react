@@ -16,3 +16,5 @@ export const selectCounter = createSelector(selectRoot, (state) => state.counter
 export const selectNumBombs = createSelector(selectRoot, (state) => state.numBombs)
 
 export const selectStatus = createSelector(selectRoot, (state) => state.status)
+
+export const selectField = createSelector(selectRoot, (state) => state.field)

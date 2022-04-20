@@ -1,8 +1,16 @@
 import { css, Theme } from '@emotion/react'
 
 export const main = ({ colors }: Theme) => css`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   height: 100vh;
+  padding-top: 100px;
   background-color: ${colors.background};
+`
+
+export const window = css`
+  transform: scale(1.4);
 `
 
 export const panel = css`
