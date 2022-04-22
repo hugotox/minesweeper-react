@@ -1,4 +1,11 @@
-# Getting Started with Create React App
+# Minesweeper React
+
+A classic Minesweeper game implemented with React/Redux/EmotionCSS. 
+
+Just for fun, no sprites were used, all UI and icons are plain CSS.
+
+[Play here](https://hugotox.github.io/minesweeper-react/)
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
