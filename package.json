@@ -1,7 +1,7 @@
 {
   "name": "minesweeper-react",
   "version": "0.1.0",
-  "homepage": "https://hugotox.github.io/minesweeper-react",
+  "homepage": "https://hugotox.github.io/minesweeper-react/",
   "private": true,
   "scripts": {
     "predeploy": "npm run build",
