@@ -5,6 +5,7 @@ import { MouseEvent } from 'react'
 import { numBombToIconName } from '../../helpers'
 import { Icon, IconNames } from '../../icons'
 import { selectField, useAppSelector } from '../../module'
+import { BOMB_CELL } from '../../module/gameSlice'
 import { Cell } from '../cell'
 
 import * as styles from './styles'
@@ -36,11 +37,17 @@ export const Field = ({ onClick, onRightClick }: FieldProps) => {
           <div key={i} style={{ display: 'flex' }}>
             {row.map((col, j) => {
               const { numBombs, status } = field[i][j]
-              const isPressed = status === 'clicked'
-              const iconName: IconNames = numBombs > 0 ? numBombToIconName[numBombs] : 'bombRed'
+              const isPressed = status === 'clicked' || status === 'revealed'
+              const iconName: IconNames = numBombs >= 0 ? numBombToIconName[numBombs] : 'bombRed'
+              const hasBomb = numBombs === BOMB_CELL
               return (
                 <button css={styles.cellButton} key={`${i}-${j}`} onMouseUp={handleMouseUp(i, j)}>
-                  <Cell isPressed={isPressed}>{isPressed && <Icon name={iconName} />}</Cell>
+                  <Cell
+                    css={hasBomb && status === 'clicked' && styles.bombClicked}
+                    isPressed={isPressed}
+                  >
+                    {isPressed && <Icon name={iconName} />}
+                  </Cell>
                 </button>
               )
             })}

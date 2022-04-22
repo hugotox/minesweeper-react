@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { Field, Panel, Window, ScoreView } from '../../components'
+import { Field, Panel, Window, ScoreView, PlainTextField } from '../../components'
 import { createField } from '../../helpers'
 import {
   setCounter,
@@ -16,6 +16,8 @@ import {
   setField,
   selectField,
   updateCellStatus,
+  revealConnectedCells,
+  gameOver,
 } from '../../module'
 import { BOMB_CELL } from '../../module/gameSlice'
 import { Cell } from '../cell'
@@ -31,33 +33,42 @@ export const Main = () => {
   const field = useAppSelector(selectField)
   const [isButtonPressed, setIsButtonPressed] = useState(false)
 
+  const initGame = useCallback(() => {
+    dispatch(setField(createField({ numBombs, numColumns, numRows })))
+  }, [dispatch, numBombs, numColumns, numRows])
+
   const handleOnStart = () => {
+    initGame()
     dispatch(gameStart())
   }
 
   const handleFieldClick = (i: number, j: number) => {
     if (status === 'stopped') {
-      handleOnStart()
+      dispatch(gameStart())
     }
-    if (field[i][j].numBombs === BOMB_CELL) {
-      console.log('bomb clicked')
+    if (field[i][j].status !== 'clicked' && field[i][j].status !== 'revealed') {
+      dispatch(updateCellStatus({ i, j, status: 'clicked' }))
+      if (field[i][j].numBombs === BOMB_CELL) {
+        dispatch(gameOver())
+      } else if (field[i][j].numBombs === 0) {
+        dispatch(revealConnectedCells(i, j))
+      }
     }
-    dispatch(updateCellStatus({ i, j, status: 'clicked' }))
   }
+
   const handleFieldRightClick = (i: number, j: number) => {
     console.log('right click', i, j)
     if (status === 'stopped') {
-      handleOnStart()
+      dispatch(gameStart())
     }
   }
 
   useEffect(() => {
-    dispatch(setField(createField({ numBombs, numColumns, numRows })))
-
+    initGame()
     window.addEventListener('contextmenu', (event) => {
       event.preventDefault()
     })
-  }, [dispatch, numBombs, numColumns, numRows])
+  }, [initGame])
 
   useEffect(() => {
     let timeout: NodeJS.Timeout
@@ -95,6 +106,7 @@ export const Main = () => {
           </Panel>
         </Panel>
       </Window>
+      <PlainTextField />
     </div>
   )
 }

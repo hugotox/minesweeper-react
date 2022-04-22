@@ -2,15 +2,16 @@ import { css, Theme } from '@emotion/react'
 
 export const main = ({ colors }: Theme) => css`
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   height: 100vh;
-  padding-top: 100px;
+  padding-top: 60px;
   background-color: ${colors.background};
 `
 
 export const window = css`
-  transform: scale(1.4);
+  transform: scale(1.1);
 `
 
 export const panel = css`
