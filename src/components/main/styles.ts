@@ -10,9 +10,7 @@ export const main = ({ colors }: Theme) => css`
   background-color: ${colors.background};
 `
 
-export const window = css`
-  transform: scale(1.1);
-`
+export const window = css``
 
 export const panel = css`
   padding: 6px;

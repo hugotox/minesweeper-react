@@ -18,6 +18,7 @@ import {
   updateCellStatus,
   revealConnectedCells,
   gameOver,
+  selectRevealedCount,
 } from '../../module'
 import { BOMB_CELL } from '../../module/gameSlice'
 import { Cell } from '../cell'
@@ -31,6 +32,7 @@ export const Main = () => {
   const counter = useAppSelector(selectCounter)
   const status = useAppSelector(selectStatus)
   const field = useAppSelector(selectField)
+  const revealed = useAppSelector(selectRevealedCount)
   const [isButtonPressed, setIsButtonPressed] = useState(false)
 
   const initGame = useCallback(() => {
@@ -107,6 +109,11 @@ export const Main = () => {
         </Panel>
       </Window>
       <PlainTextField />
+      <pre>
+        Bombs: {numBombs} <br />
+        Revealed: {revealed} <br />
+        Total: {numColumns * numRows}
+      </pre>
     </div>
   )
 }
