@@ -1,7 +1,7 @@
 import { getSurroundingCells } from '../helpers'
 
-import { updateCellStatus } from './actions'
-import { selectField, selectFieldSize } from './selectors'
+import { gameStop, updateCellStatus } from './actions'
+import { selectField, selectFieldSize, selectNumBombs, selectRevealedCount } from './selectors'
 import { AppDispatch, GetState } from './store'
 
 export const revealConnectedCells =
@@ -55,4 +55,12 @@ export const revealConnectedCells =
     })
   }
 
-export const gameOver = () => (dispatch: AppDispatch) => {}
+export const checkRemainingBombs = () => (dispatch: AppDispatch, getState: GetState) => {
+  const state = getState()
+  const numBombs = selectNumBombs(state)
+  const { numColumns, numRows } = selectFieldSize(state)
+  let { revealed } = selectRevealedCount(state)
+  if (revealed + numBombs === numRows * numColumns) {
+    dispatch(gameStop('win'))
+  }
+}

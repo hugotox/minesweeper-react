@@ -35,6 +35,9 @@ export const gameSlice = createSlice({
       state.status = 'playing'
       state.counter = 0
     },
+    gameStop: (state, { payload }: PayloadAction<GameState['status']>) => {
+      state.status = payload
+    },
     setCounter: (state, { payload }: PayloadAction<number>) => {
       state.counter = payload
     },

@@ -15,7 +15,7 @@ export interface ButtonProps extends HTMLAttributes<HTMLDivElement> {
 
 export const Button = ({ type, ...rest }: ButtonProps) => {
   return (
-    <Cell height={14} width={16} {...rest}>
+    <Cell height={14} width={15} {...rest}>
       <ThemeProvider theme={GrayScale}>
         {type === 'close' && <Icon css={styles.icon} name="cross" />}
         {type === 'minimize' && <span css={styles.minimize} />}

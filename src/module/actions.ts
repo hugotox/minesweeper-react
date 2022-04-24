@@ -1,3 +1,3 @@
 import { gameSlice } from './gameSlice'
 
-export const { gameStart, setCounter, setField, updateCellStatus } = gameSlice.actions
+export const { gameStart, gameStop, setCounter, setField, updateCellStatus } = gameSlice.actions

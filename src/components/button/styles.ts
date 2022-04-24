@@ -20,7 +20,7 @@ export const minimize = ({ colors }: Theme) => css`
 export const maximize = ({ colors }: Theme) => css`
   position: absolute;
   top: 3px;
-  left: 4px;
+  left: 3px;
   display: inline-block;
   width: 9px;
   height: 9px;

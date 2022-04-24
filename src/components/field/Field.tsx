@@ -47,6 +47,7 @@ export const Field = ({ onClick, onRightClick }: FieldProps) => {
                     isPressed={isPressed}
                   >
                     {isPressed && <Icon name={iconName} />}
+                    {status === 'flag' && <Icon name="flag" />}
                   </Cell>
                 </button>
               )
