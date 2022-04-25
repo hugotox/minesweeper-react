@@ -38,7 +38,12 @@ export const Field = ({ onClick, onRightClick }: FieldProps) => {
             {row.map((col, j) => {
               const { numBombs, status } = field[i][j]
               const isPressed = status === 'clicked' || status === 'revealed'
-              const iconName: IconNames = numBombs >= 0 ? numBombToIconName[numBombs] : 'bombRed'
+              const iconName: IconNames =
+                numBombs >= 0
+                  ? numBombToIconName[numBombs]
+                  : status === 'clicked'
+                  ? 'bombRed'
+                  : 'bomb'
               const hasBomb = numBombs === BOMB_CELL
               return (
                 <button css={styles.cellButton} key={`${i}-${j}`} onMouseUp={handleMouseUp(i, j)}>

@@ -9,7 +9,7 @@ export const revealConnectedCells =
     let state = getState()
     const { numColumns, numRows } = selectFieldSize(state)
     const toCheck: number[][] = [[givenI, givenJ]] // we'll use the array as a queue
-    let toReveal: number[][] = []
+    const visited: Record<string, number> = {} // allows to visit each cell only once
 
     while (toCheck.length > 0) {
       const checkingCell = toCheck.shift()
@@ -21,8 +21,13 @@ export const revealConnectedCells =
           if (surroundingCoords.length === 2) {
             const field = selectField(state)
             const surroundingCell = field[surroundingCoords[0]][surroundingCoords[1]]
-
-            if (surroundingCell.status !== 'clicked' && surroundingCell.status !== 'revealed') {
+            const visitedKey = String(surroundingCoords)
+            if (
+              surroundingCell.status !== 'clicked' &&
+              surroundingCell.status !== 'revealed' &&
+              surroundingCell.status !== 'flag' &&
+              !visited[visitedKey]
+            ) {
               dispatch(
                 updateCellStatus({
                   i: surroundingCoords[0],
@@ -32,28 +37,29 @@ export const revealConnectedCells =
               )
               state = getState() // dispatch updates state, so we have to get it again
               if (surroundingCell.numBombs === 0) {
-                toReveal = toReveal.concat(
-                  getSurroundingCells(
-                    numRows,
-                    numColumns,
-                    surroundingCoords[0],
-                    surroundingCoords[1]
-                  )
-                )
                 toCheck.push(surroundingCoords)
-              } else {
-                toReveal = toReveal.concat([[surroundingCoords[0], surroundingCoords[1]]])
               }
             }
+            visited[visitedKey] = 1
           }
         }
       }
     }
-
-    toReveal.forEach((coords) => {
-      dispatch(updateCellStatus({ i: coords[0], j: coords[1], status: 'revealed' }))
-    })
   }
+
+export const revealBombs = () => (dispatch: AppDispatch, getState: GetState) => {
+  const state = getState()
+  const field = selectField(state)
+  const { numColumns, numRows } = selectFieldSize(state)
+  for (let i = 0; i < numRows; i++) {
+    for (let j = 0; j < numColumns; j++) {
+      const { numBombs, status } = field[i][j]
+      if (numBombs === -1 && status !== 'clicked') {
+        dispatch(updateCellStatus({ i, j, status: 'revealed' }))
+      }
+    }
+  }
+}
 
 export const checkRemainingBombs = () => (dispatch: AppDispatch, getState: GetState) => {
   const state = getState()

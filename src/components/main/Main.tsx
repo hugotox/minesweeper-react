@@ -20,6 +20,7 @@ import {
   selectRevealedCount,
   checkRemainingBombs,
   gameStop,
+  revealBombs,
 } from '../../module'
 import { BOMB_CELL } from '../../module/gameSlice'
 import { Cell } from '../cell'
@@ -46,17 +47,19 @@ export const Main = () => {
   }
 
   const handleFieldClick = (i: number, j: number) => {
-    if (status === 'win' || status === 'lose') {
+    const { numBombs, status: cellStatus } = field[i][j]
+    if (status === 'win' || status === 'lose' || cellStatus === 'flag') {
       return
     }
     if (status !== 'playing') {
       dispatch(gameStart())
     }
-    if (field[i][j].status !== 'clicked' && field[i][j].status !== 'revealed') {
+    if (cellStatus !== 'clicked' && cellStatus !== 'revealed') {
       dispatch(updateCellStatus({ i, j, status: 'clicked' }))
-      if (field[i][j].numBombs === BOMB_CELL) {
+      if (numBombs === BOMB_CELL) {
         dispatch(gameStop('lose'))
-      } else if (field[i][j].numBombs === 0) {
+        dispatch(revealBombs())
+      } else if (numBombs === 0) {
         dispatch(revealConnectedCells(i, j))
       }
       dispatch(checkRemainingBombs())
@@ -64,13 +67,16 @@ export const Main = () => {
   }
 
   const handleFieldRightClick = (i: number, j: number) => {
+    const { status: cellStatus } = field[i][j]
     if (status === 'win' || status === 'lose') {
       return
     }
     if (status !== 'playing') {
       dispatch(gameStart())
     }
-    if (field[i][j].status !== 'clicked' && field[i][j].status !== 'revealed') {
+    if (cellStatus === 'flag') {
+      dispatch(updateCellStatus({ i, j, status: 'initial' }))
+    } else if (cellStatus !== 'clicked' && cellStatus !== 'revealed') {
       dispatch(updateCellStatus({ i, j, status: 'flag' }))
     }
   }
@@ -120,12 +126,12 @@ export const Main = () => {
           </Panel>
         </Panel>
       </Window>
-      {/* <PlainTextField />
+      <PlainTextField />
       <pre>
         Bombs: {numBombs} <br />
         Revealed: {revealed} <br />
         Total: {numColumns * numRows}
-      </pre> */}
+      </pre>
     </div>
   )
 }

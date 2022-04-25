@@ -18,10 +18,18 @@ const numberMap: Record<string, any> = {
   '7': numbers.seven,
   '8': numbers.eight,
   '9': numbers.nine,
+  minus: numbers.minus,
 }
 
 export const ScoreView = ({ value }: ScoreViewProps) => {
-  const [cent, dec, unit] = String(value).padStart(3, '0').split('')
+  let [cent, dec, unit] = String(value).padStart(3, '0').split('')
+
+  if (dec === '-') {
+    cent = 'minus'
+    dec = '0'
+  } else if (cent === '-') {
+    cent = 'minus'
+  }
   return (
     <div css={styles.scoreView}>
       <div css={[styles.digital, numberMap[cent]]} />
