@@ -2,13 +2,8 @@
 
 import { MouseEvent } from 'react'
 
-import { numBombToIconName } from '../../helpers'
-import { Icon, IconNames } from '../../icons'
 import { selectField, useAppSelector } from '../../module'
-import { BOMB_CELL } from '../../module/gameSlice'
-import { Cell } from '../cell'
-
-import * as styles from './styles'
+import { FieldButton } from '../field-button'
 
 export interface FieldProps {
   onClick: (i: number, j: number) => void
@@ -35,28 +30,9 @@ export const Field = ({ onClick, onRightClick }: FieldProps) => {
       {field.map((row, i) => {
         return (
           <div key={i} style={{ display: 'flex' }}>
-            {row.map((col, j) => {
-              const { numBombs, status } = field[i][j]
-              const isPressed = status === 'clicked' || status === 'revealed'
-              const iconName: IconNames =
-                numBombs >= 0
-                  ? numBombToIconName[numBombs]
-                  : status === 'clicked'
-                  ? 'bombRed'
-                  : 'bomb'
-              const hasBomb = numBombs === BOMB_CELL
-              return (
-                <button css={styles.cellButton} key={`${i}-${j}`} onMouseUp={handleMouseUp(i, j)}>
-                  <Cell
-                    css={hasBomb && status === 'clicked' && styles.bombClicked}
-                    isPressed={isPressed}
-                  >
-                    {isPressed && <Icon name={iconName} />}
-                    {status === 'flag' && <Icon name="flag" />}
-                  </Cell>
-                </button>
-              )
-            })}
+            {row.map((col, j) => (
+              <FieldButton handleMouseUp={handleMouseUp} i={i} j={j} key={`${i}-${j}`} />
+            ))}
           </div>
         )
       })}

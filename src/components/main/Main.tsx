@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { Field, Panel, Window, ScoreView, PlainTextField } from '../../components'
+import { Field, Panel, Window, ScoreView } from '../../components'
 import { createField } from '../../helpers'
 import {
   setCounter,
@@ -31,7 +31,7 @@ export const Main = () => {
   const dispatch = useAppDispatch()
   const { numColumns, numRows } = useAppSelector(selectFieldSize)
   const numBombs = useAppSelector(selectNumBombs)
-  const { flagged, revealed } = useAppSelector(selectRevealedCount)
+  const { flagged } = useAppSelector(selectRevealedCount)
   const counter = useAppSelector(selectCounter)
   const status = useAppSelector(selectStatus)
   const field = useAppSelector(selectField)
@@ -126,12 +126,12 @@ export const Main = () => {
           </Panel>
         </Panel>
       </Window>
-      <PlainTextField />
+      {/* <PlainTextField />
       <pre>
         Bombs: {numBombs} <br />
         Revealed: {revealed} <br />
         Total: {numColumns * numRows}
-      </pre>
+      </pre> */}
     </div>
   )
 }
