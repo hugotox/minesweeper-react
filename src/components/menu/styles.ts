@@ -7,11 +7,12 @@ export const menu = css`
   padding: 4px;
 `
 
-export const button = css`
+export const button = ({ colors }: Theme) => css`
   display: inline-block;
   margin-right: 4px;
   padding: 0;
   border: 0;
+  color: ${colors.black};
   font-size: 12px;
   background-color: transparent;
 

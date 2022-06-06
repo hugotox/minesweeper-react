@@ -6,8 +6,9 @@ export const main = ({ colors }: Theme) => css`
   align-items: center;
   justify-content: flex-start;
   height: 100vh;
-  padding-top: 60px;
+  padding-top: 120px;
   background-color: ${colors.background};
+  transform: scale(1.4);
 `
 
 export const window = css``
